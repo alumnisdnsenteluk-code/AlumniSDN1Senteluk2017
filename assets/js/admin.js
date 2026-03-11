@@ -830,11 +830,58 @@ const AdminGaleri = {
 // Admin Settings
 // ============================================
 const AdminSettings = {
+  // Default cloud sync credentials
+  DEFAULT_BIN_ID: '69b119d4d746013455b0a8bc',
+  DEFAULT_API_KEY: '$2a$10$xbBrXLenPoHz1D/q8sX8N.xMlSJ.gmy5W1SXUfduj1LgkxU.RIDce',
+
   init() {
     this.loadSettings();
     this.loadCloudSyncConfig();
     this.setupForm();
     this.setupCloudSync();
+    // Auto-activate cloud sync with default credentials
+    this.autoActivateCloudSync();
+  },
+
+  // Auto-activate cloud sync on page load
+  autoActivateCloudSync() {
+    // Check if cloud sync is already configured
+    const existingConfig = CloudSync.loadConfig();
+    
+    if (!existingConfig || !existingConfig.isActive) {
+      // Use default credentials from this application
+      if (this.DEFAULT_BIN_ID && this.DEFAULT_API_KEY) {
+        console.log('Auto-activating cloud sync with default credentials...');
+        CloudSync.setup({
+          binId: this.DEFAULT_BIN_ID,
+          apiKey: this.DEFAULT_API_KEY
+        });
+        this.updateCloudSyncStatus(true);
+        
+        // Try to pull data from cloud on first load
+        this.pullCloudDataOnFirstLoad();
+      }
+    }
+  },
+
+  async pullCloudDataOnFirstLoad() {
+    try {
+      const result = await CloudSync.pullData();
+      if (result.success && result.data) {
+        CloudSync.mergeCloudData(result.data);
+        console.log('Cloud data pulled successfully on first load');
+        
+        // Reload data in DataManager
+        if (DataManager.initData) {
+          await DataManager.initData();
+        }
+        
+        // Dispatch event for UI to refresh
+        window.dispatchEvent(new CustomEvent('cloudDataLoaded'));
+      }
+    } catch (e) {
+      console.error('Failed to pull cloud data on first load:', e);
+    }
   },
 
   loadSettings() {
