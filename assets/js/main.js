@@ -416,37 +416,6 @@ const DataManager = {
 };
 
 // ============================================
-// Auth Manager
-// ============================================
-const Auth = {
-  USERNAME: 'admin',
-  PASSWORD: 'senteluk2017',
-
-  isLoggedIn() {
-    return localStorage.getItem('admin_logged_in') === 'true';
-  },
-
-  login(username, password) {
-    if (username === this.USERNAME && password === this.PASSWORD) {
-      localStorage.setItem('admin_logged_in', 'true');
-      return true;
-    }
-    return false;
-  },
-
-  logout() {
-    localStorage.removeItem('admin_logged_in');
-    window.location.href = 'login.html';
-  },
-
-  requireAuth() {
-    if (!this.isLoggedIn()) {
-      window.location.href = 'login.html';
-    }
-  }
-};
-
-// ============================================
 // Footer Manager
 // ============================================
 const FooterManager = {
@@ -561,73 +530,6 @@ function showImageLightbox(src, title = '', description = '') {
 }
 
 // ============================================
-// Cloud Sync Auto-Initialize
-// ============================================
-const CloudSyncAutoInit = {
-  // Default cloud sync credentials
-  DEFAULT_BIN_ID: '69b119d4d746013455b0a8bc',
-  DEFAULT_API_KEY: '$2a$10$xbBrXLenPoHz1D/q8sX8N.xMlSJ.gmy5W1SXUfduj1LgkxU.RIDce',
-
-  init() {
-    // Wait for DataManager and CloudSync to be ready
-    this.activateCloudSync();
-  },
-
-  async activateCloudSync() {
-    // Check if CloudSync is available
-    if (typeof CloudSync === 'undefined') {
-      console.log('CloudSync not loaded yet, retrying...');
-      setTimeout(() => this.activateCloudSync(), 500);
-      return;
-    }
-
-    // Wait for DataManager to be ready
-    await DataManager.initData();
-
-    // Check if cloud sync is already configured and active
-    const existingConfig = CloudSync.loadConfig();
-    
-    if (!existingConfig || !existingConfig.isActive) {
-      // Use default credentials from this application
-      if (this.DEFAULT_BIN_ID && this.DEFAULT_API_KEY) {
-        console.log('Auto-activating cloud sync with default credentials...');
-        CloudSync.setup({
-          binId: this.DEFAULT_BIN_ID,
-          apiKey: this.DEFAULT_API_KEY
-        });
-        
-        // Try to pull data from cloud
-        await this.pullCloudData();
-      }
-    } else {
-      // Already configured, try to sync
-      console.log('Cloud sync already configured, checking for updates...');
-      await this.pullCloudData();
-    }
-  },
-
-  async pullCloudData() {
-    if (!CloudSync.isActive()) return;
-
-    try {
-      const result = await CloudSync.pullData();
-      if (result.success && result.data) {
-        CloudSync.mergeCloudData(result.data);
-        console.log('Cloud data pulled successfully');
-        
-        // Reload data in DataManager
-        await DataManager.initData();
-        
-        // Dispatch event for UI to refresh
-        window.dispatchEvent(new CustomEvent('cloudDataLoaded'));
-      }
-    } catch (e) {
-      console.error('Failed to pull cloud data:', e);
-    }
-  }
-};
-
-// ============================================
 // Initialize
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -638,9 +540,6 @@ document.addEventListener('DOMContentLoaded', () => {
   Lightbox.init();
   LightboxImage.init();
   FooterManager.init();
-  
-  // Initialize cloud sync
-  CloudSyncAutoInit.init();
 });
 
 window.DarkMode = DarkMode;
@@ -648,7 +547,6 @@ window.Navigation = Navigation;
 window.Utils = Utils;
 window.Modal = Modal;
 window.DataManager = DataManager;
-window.Auth = Auth;
 window.Lightbox = Lightbox;
 window.LightboxImage = LightboxImage;
 window.FooterManager = FooterManager;
