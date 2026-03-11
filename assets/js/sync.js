@@ -6,19 +6,21 @@ const CloudSync = {
   config: {
     binId: null,
     apiKey: null,
-    isActive: false
+    isActive: false,
+    autoSync: true
   },
 
   STORAGE_KEY: 'cloudsync_config',
 
   /**
    * Initialize CloudSync with configuration
-   * @param {Object} config - { binId, apiKey }
+   * @param {Object} config - { binId, apiKey, autoSync }
    */
   setup(config) {
     if (config && config.binId && config.apiKey) {
       this.config.binId = config.binId;
       this.config.apiKey = config.apiKey;
+      this.config.autoSync = config.autoSync !== false;
       this.config.isActive = true;
       this.saveConfig();
       console.log('CloudSync initialized with BIN_ID:', config.binId);
@@ -101,7 +103,7 @@ const CloudSync = {
   },
 
   /**
-   * Get data from JSONBin
+   * Get all data from JSONBin
    */
   async getData() {
     if (!this.isActive()) {
@@ -128,9 +130,9 @@ const CloudSync = {
   },
 
   /**
-   * Save data to JSONBin
+   * Save all data to JSONBin
    */
-  async saveData(data) {
+  async saveAllData(data) {
     if (!this.isActive()) {
       return { success: false, message: 'Cloud sync tidak aktif.' };
     }
@@ -156,13 +158,69 @@ const CloudSync = {
   },
 
   /**
+   * Sync all local data to cloud (manual trigger)
+   */
+  async syncToCloud() {
+    const data = {
+      alumni: DataManager.alumni.getAll(),
+      agenda: DataManager.agenda.getAll(),
+      galeri: DataManager.galeri.getAll(),
+      config: DataManager.config.get(),
+      lastSync: new Date().toISOString()
+    };
+    
+    return await this.saveAllData(data);
+  },
+
+  /**
+   * Sync from cloud to local (manual trigger)
+   */
+  async syncFromCloud() {
+    const result = await this.getData();
+    
+    if (result.success && result.data) {
+      const cloudData = result.data;
+      
+      // Restore data to localStorage
+      if (cloudData.alumni) {
+        DataManager.setData('alumni_data', cloudData.alumni);
+      }
+      if (cloudData.agenda) {
+        DataManager.setData('agenda_data', cloudData.agenda);
+      }
+      if (cloudData.galeri) {
+        DataManager.setData('galeri_data', cloudData.galeri);
+      }
+      if (cloudData.config) {
+        DataManager.setData('config_data', cloudData.config);
+      }
+      
+      return { success: true, message: 'Data berhasil disinkronisasi dari cloud!' };
+    }
+    
+    return result;
+  },
+
+  /**
+   * Auto sync - push data to cloud when local data changes
+   */
+  async autoSync() {
+    if (!this.isActive() || !this.config.autoSync) {
+      return { success: false, message: 'Auto sync tidak aktif' };
+    }
+    
+    return await this.syncToCloud();
+  },
+
+  /**
    * Clear configuration
    */
   clearConfig() {
     this.config = {
       binId: null,
       apiKey: null,
-      isActive: false
+      isActive: false,
+      autoSync: true
     };
     localStorage.removeItem(this.STORAGE_KEY);
   }

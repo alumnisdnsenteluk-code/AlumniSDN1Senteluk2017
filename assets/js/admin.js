@@ -362,6 +362,9 @@ const AdminAlumni = {
       Utils.showToast('Alumni berhasil ditambahkan!');
     }
 
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+
     Modal.hide('alumni-modal');
     this.loadAlumni();
     this.resetForm();
@@ -374,8 +377,23 @@ const AdminAlumni = {
     ImageUpload.deleteImage(ImageUpload.STORAGE_KEYS.PROFILE, id);
     
     DataManager.alumni.delete(id);
+    
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+    
     Utils.showToast('Alumni berhasil dihapus!');
     this.loadAlumni();
+  },
+
+  async triggerCloudSync() {
+    if (CloudSync.isActive()) {
+      try {
+        await CloudSync.autoSync();
+        console.log('Alumni data synced to cloud');
+      } catch (e) {
+        console.error('Cloud sync failed:', e);
+      }
+    }
   },
 
   resetForm() {
@@ -510,6 +528,9 @@ const AdminAgenda = {
       Utils.showToast('Agenda berhasil ditambahkan!');
     }
 
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+
     Modal.hide('agenda-modal');
     this.loadAgenda();
     this.resetForm();
@@ -519,8 +540,23 @@ const AdminAgenda = {
     if (!confirm('Apakah Anda yakin ingin menghapus agenda ini?')) return;
 
     DataManager.agenda.delete(id);
+    
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+    
     Utils.showToast('Agenda berhasil dihapus!');
     this.loadAgenda();
+  },
+
+  async triggerCloudSync() {
+    if (CloudSync.isActive()) {
+      try {
+        await CloudSync.autoSync();
+        console.log('Agenda data synced to cloud');
+      } catch (e) {
+        console.error('Cloud sync failed:', e);
+      }
+    }
   },
 
   resetForm() {
@@ -746,6 +782,9 @@ const AdminGaleri = {
       Utils.showToast('Foto galeri berhasil ditambahkan!');
     }
 
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+
     Modal.hide('galeri-modal');
     this.loadGaleri();
     this.resetForm();
@@ -757,8 +796,23 @@ const AdminGaleri = {
     ImageUpload.deleteImage(ImageUpload.STORAGE_KEYS.GALERI, id);
     
     DataManager.galeri.delete(id);
+    
+    // Auto-sync to cloud
+    this.triggerCloudSync();
+    
     Utils.showToast('Foto galeri berhasil dihapus!');
     this.loadGaleri();
+  },
+
+  async triggerCloudSync() {
+    if (CloudSync.isActive()) {
+      try {
+        await CloudSync.autoSync();
+        console.log('Galeri data synced to cloud');
+      } catch (e) {
+        console.error('Cloud sync failed:', e);
+      }
+    }
   },
 
   resetForm() {
