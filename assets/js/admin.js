@@ -778,7 +778,9 @@ const AdminGaleri = {
 const AdminSettings = {
   init() {
     this.loadSettings();
+    this.loadCloudSyncConfig();
     this.setupForm();
+    this.setupCloudSync();
   },
 
   loadSettings() {
@@ -801,6 +803,20 @@ const AdminSettings = {
     }
   },
 
+  loadCloudSyncConfig() {
+    // Load saved cloud sync config
+    const cloudConfig = CloudSync.loadConfig();
+    if (cloudConfig) {
+      if (document.getElementById('setting-bin-id')) {
+        document.getElementById('setting-bin-id').value = cloudConfig.binId || '';
+      }
+      if (document.getElementById('setting-api-key')) {
+        document.getElementById('setting-api-key').value = cloudConfig.apiKey || '';
+      }
+      this.updateCloudSyncStatus(cloudConfig.isActive);
+    }
+  },
+
   setupForm() {
     const form = document.getElementById('settings-form');
     if (!form) return;
@@ -809,6 +825,91 @@ const AdminSettings = {
       e.preventDefault();
       this.save();
     });
+  },
+
+  setupCloudSync() {
+    const testBtn = document.getElementById('test-connection-btn');
+    if (testBtn) {
+      testBtn.addEventListener('click', () => {
+        this.testCloudConnection();
+      });
+    }
+  },
+
+  updateCloudSyncStatus(isActive) {
+    const statusEl = document.getElementById('cloud-sync-status');
+    if (statusEl) {
+      if (isActive) {
+        statusEl.textContent = 'Aktif';
+        statusEl.classList.remove('inactive');
+        statusEl.classList.add('active');
+      } else {
+        statusEl.textContent = 'Tidak Aktif';
+        statusEl.classList.remove('active');
+        statusEl.classList.add('inactive');
+      }
+    }
+  },
+
+  async testCloudConnection() {
+    const binId = document.getElementById('setting-bin-id').value.trim();
+    const apiKey = document.getElementById('setting-api-key').value.trim();
+    const resultEl = document.getElementById('connection-result');
+    const testBtn = document.getElementById('test-connection-btn');
+
+    if (!binId || !apiKey) {
+      this.showConnectionResult(resultEl, false, 'Silakan masukkan BIN_ID dan API_KEY terlebih dahulu.');
+      return;
+    }
+
+    // Show loading state
+    testBtn.disabled = true;
+    testBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px; animation: spin 1s linear infinite;">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10"></path>
+      </svg>
+      Menguji...
+    `;
+    resultEl.style.display = 'none';
+
+    // Temporarily setup CloudSync with input values
+    CloudSync.setup({ binId, apiKey });
+    
+    // Test connection
+    const result = await CloudSync.testConnection();
+    
+    // Reset button
+    testBtn.disabled = false;
+    testBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      Test Koneksi
+    `;
+
+    if (result.success) {
+      this.showConnectionResult(resultEl, true, 'Koneksi berhasil! Cloud sync dapat digunakan.');
+      this.updateCloudSyncStatus(true);
+    } else {
+      this.showConnectionResult(resultEl, false, result.message);
+      this.updateCloudSyncStatus(false);
+    }
+  },
+
+  showConnectionResult(element, isSuccess, message) {
+    element.style.display = 'flex';
+    element.className = 'connection-result ' + (isSuccess ? 'success' : 'error');
+    element.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        ${isSuccess 
+          ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
+          : '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'
+        }
+      </svg>
+      <span>${message}</span>
+    `;
   },
 
   save() {
@@ -823,6 +924,16 @@ const AdminSettings = {
     };
 
     DataManager.config.update(configData);
+
+    // Save Cloud Sync configuration
+    const binId = document.getElementById('setting-bin-id').value.trim();
+    const apiKey = document.getElementById('setting-api-key').value.trim();
+    
+    if (binId && apiKey) {
+      CloudSync.setup({ binId, apiKey });
+      this.updateCloudSyncStatus(true);
+    }
+
     Utils.showToast('Pengaturan berhasil disimpan!');
   }
 };
