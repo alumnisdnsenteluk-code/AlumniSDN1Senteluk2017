@@ -979,16 +979,25 @@ const AdminSettings = {
 
     DataManager.config.update(configData);
 
-    // Save Cloud Sync configuration
+    // Save Cloud Sync configuration - requires password "update"
+    const password = document.getElementById('setting-admin-password').value.trim();
     const binId = document.getElementById('setting-bin-id').value.trim();
     const apiKey = document.getElementById('setting-api-key').value.trim();
     
-    if (binId && apiKey) {
-      CloudSync.setup({ binId, apiKey });
-      this.updateCloudSyncStatus(true);
+    if (password === 'update') {
+      if (binId && apiKey) {
+        CloudSync.setup({ binId, apiKey });
+        this.updateCloudSyncStatus(true);
+        Utils.showToast('Pengaturan & Cloud Sync berhasil disimpan!');
+      } else {
+        Utils.showToast('Pengaturan berhasil disimpan! (Cloud Sync dilewati - BIN_ID/API_KEY kosong)');
+      }
+    } else if (binId || apiKey) {
+      // If user entered binId or apiKey but wrong password
+      Utils.showToast('Pengaturan berhasil disimpan! (Cloud Sync: Gunakan password "update" untuk menyimpan)');
+    } else {
+      Utils.showToast('Pengaturan berhasil disimpan!');
     }
-
-    Utils.showToast('Pengaturan berhasil disimpan!');
   }
 };
 
