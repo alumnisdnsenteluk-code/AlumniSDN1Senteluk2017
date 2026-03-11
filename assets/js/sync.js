@@ -223,9 +223,70 @@ const CloudSync = {
       autoSync: true
     };
     localStorage.removeItem(this.STORAGE_KEY);
+  },
+
+  /**
+   * Pull data from cloud (alias for getData)
+   */
+  async pullData() {
+    return await this.getData();
+  },
+
+  /**
+   * Merge cloud data with local data
+   */
+  mergeCloudData(cloudData) {
+    if (!cloudData) return;
+    
+    // Save cloud data to localStorage
+    if (cloudData.alumni) {
+      localStorage.setItem('alumni_data', JSON.stringify(cloudData.alumni));
+    }
+    if (cloudData.agenda) {
+      localStorage.setItem('agenda_data', JSON.stringify(cloudData.agenda));
+    }
+    if (cloudData.galeri) {
+      localStorage.setItem('galeri_data', JSON.stringify(cloudData.galeri));
+    }
+    if (cloudData.config) {
+      localStorage.setItem('config_data', JSON.stringify(cloudData.config));
+    }
+    
+    console.log('Cloud data merged to localStorage');
   }
 };
 
 // Auto-load config on script load
 CloudSync.loadConfig();
+
+// Auto-sync on page load - pull data from cloud if sync is active
+document.addEventListener('DOMContentLoaded', async () => {
+  // Wait for DataManager to be ready
+  if (typeof DataManager !== 'undefined') {
+    await DataManager.initData();
+    
+    // If cloud sync is configured, try to pull data from cloud
+    if (CloudSync.isActive()) {
+      console.log('Cloud sync active, pulling data from cloud...');
+      try {
+        const result = await CloudSync.pullData();
+        if (result.success && result.data) {
+          // Merge cloud data with local data
+          CloudSync.mergeCloudData(result.data);
+          console.log('Data pulled from cloud successfully');
+          
+          // Reload data in DataManager
+          if (DataManager.initData) {
+            await DataManager.initData();
+          }
+          
+          // Dispatch event for UI to refresh
+          window.dispatchEvent(new CustomEvent('cloudDataLoaded'));
+        }
+      } catch (e) {
+        console.error('Failed to pull data from cloud:', e);
+      }
+    }
+  }
+});
 
