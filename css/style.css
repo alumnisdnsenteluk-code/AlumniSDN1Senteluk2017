@@ -10,7 +10,8 @@
   --text-primary: #1a1a1a;
   --text-secondary: #666;
   --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --bg-primary: #f8fafc;
+--bg-primary: #ffffff;
+--glass-bg: rgba(255, 255, 255, 0.3);
 }
 
 [data-theme="dark"] {
