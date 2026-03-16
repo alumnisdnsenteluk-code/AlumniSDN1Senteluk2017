@@ -17,7 +17,16 @@ const siswaData = [
   {Nama: "Evi Muliana", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Juara menggambar"},
   {Nama: "Miftahul Jannah", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Teman baik semua"},
   {Nama: "Fathurrahman", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Pemimpin pramuka"},
-  {Nama: "Hanezha Andriani", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"}
+  {Nama: "Hanezha Andriani", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Rahmatullah", Jenis_Kelamin: "Laki Laki", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Ibnu Abbas", Jenis_Kelamin: "Laki Laki", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Nova Tatia", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Musyarofa", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Neni", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Halimah", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "M. Chudaeri", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Dimas", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Siswa baru, welcome!"},
+  {Nama: "Azka", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Siswa baru, welcome!"}
 ];
 
 let filteredSiswa = siswaData.slice();
