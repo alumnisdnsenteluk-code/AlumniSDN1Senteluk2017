@@ -12,13 +12,14 @@ const siswaData = [
   {Nama: "Ahmad Furqan", Jenis_Kelamin: "Laki-Laki", Sosial_Media: ""},
   {Nama: "M. Ikrom", Jenis_Kelamin: "Laki-Laki", Sosial_Media: ""},
   {Nama: "Rifqi Anshori", Jenis_Kelamin: "Laki-Laki", Sosial_Media: ""},
-  {Nama: "Weni Yulistiani", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
+  {Nama: "Weny Yulistiani", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
   {Nama: "Halia junita", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
   {Nama: "Anisa Humaira", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
   {Nama: "Ro'yal Aini", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
   {Nama: "Evi Muliana", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
   {Nama: "Miftahul Jannah", Jenis_Kelamin: "Perempuan", Sosial_Media: ""},
-  {Nama: "Fathurrahman", Jenis_Kelamin: "Laki-Laki", Sosial_Media: ""}
+  {Nama: "Fathurrahman", Jenis_Kelamin: "Laki-Laki", Sosial_Media: ""},
+  {Nama: "Hanezha Andriani", Jenis_Kelamin: "Perempuan", Sosial_Media: ""}
 ];
 
 let filteredSiswa = siswaData.slice();
