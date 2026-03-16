@@ -1,7 +1,4 @@
-// Reusable Gallery Logic with Download - For gallery.html, album.html, semua-album.html
-
-// Uses window.albumData from album-data.js
-
+// Reusable Gallery Logic - Original with better fullscreen spacing
 let currentAlbum = 'all';
 let currentIndex = 0;
 
