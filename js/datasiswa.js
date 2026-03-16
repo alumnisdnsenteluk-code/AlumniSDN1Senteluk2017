@@ -1,6 +1,6 @@
 // Data Siswa Alumni SDN 1 Senteluk - Full Profile Modal + A-Z
 const siswaData = [
-  {Nama: "Habiburrohman Rizqi", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Life is a single PLayer Game"},
+  {Nama: "Habiburrohman Rizqi", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "https://www.instagram.com/rizqi_iqy?igsh=anlxeml6YWp5NDRi", Catatan: "Life is a single PLayer Game"},
   {Nama: "M Said Aqil Pratama", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Suka bola masa SD"},
   {Nama: "Yazidir Rahman", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Pemimpin kelas yang baik"},
   {Nama: "Malik Ibrahim", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Juara lomba mewarnai"},
