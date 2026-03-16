@@ -10,11 +10,11 @@ const siswaData = [
   {Nama: "Ahmad Furqan", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Suka bernyanyi"},
   {Nama: "M. Ikrom", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Pencerahan kelas"},
   {Nama: "Rifqi Anshori", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Atlet lari cepat"},
-  {Nama: "Weny Yulistiani", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Ketua kelas berprestasi"},
+  {Nama: "Weni Yulistiani", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Ketua kelas berprestasi"},
   {Nama: "Halia junita", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Penyanyi solo terbaik"},
   {Nama: "Anisa Humaira", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Kreatif seni rupa"},
   {Nama: "Ro'yal Aini", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Pemalu tapi pintar"},
-  {Nama: "Evi Muliyana", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Juara menggambar"},
+  {Nama: "Evi Muliana", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Juara menggambar"},
   {Nama: "Miftahul Jannah", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Teman baik semua"},
   {Nama: "Fathurrahman", Jenis_Kelamin: "Laki-Laki", Sosial_Media: "", Catatan: "Pemimpin pramuka"},
   {Nama: "Hanezha Andriani", Jenis_Kelamin: "Perempuan", Sosial_Media: "", Catatan: "Siswa baru, welcome!"}
