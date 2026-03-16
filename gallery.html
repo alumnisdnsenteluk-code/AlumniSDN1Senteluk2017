@@ -29,7 +29,13 @@
     }
     @media (max-width: 768px) {
       .grid-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -55,7 +61,7 @@
           <li class="nav-item">
             <a class="nav-link glass-text" href="datasiswa.html">Data Siswa</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item">
             <button class="btn glass btn-sm ms-2" id="darkToggle">
               <i class="bi bi-moon"></i>
             </button>
@@ -79,13 +85,23 @@
           </button>
         </div>
         <div class="col-auto">
+          <button class="btn btn-lg glass px-4 py-2 fw-bold album-filter" data-album="2017" style="border: 2px solid var(--glass-border); color: var(--text-primary);">
+            <i class="bi bi-calendar3 me-2"></i>Album 2017
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-lg glass px-4 py-2 fw-bold album-filter" data-album="2023" style="border: 2px solid var(--glass-border); color: var(--text-primary);">
+            <i class="bi bi-calendar3 me-2"></i>Album 2023
+          </button>
+        </div>
+        <div class="col-auto">
           <button class="btn btn-lg glass px-4 py-2 fw-bold album-filter" data-album="2026" style="border: 2px solid var(--glass-border); color: var(--text-primary);">
             <i class="bi bi-calendar-event me-2"></i>Album 2026
           </button>
         </div>
         <div class="col-auto">
-          <button class="btn btn-lg glass px-4 py-2 fw-bold album-filter" data-album="2017" style="border: 2px solid var(--glass-border); color: var(--text-primary);">
-            <i class="bi bi-calendar3 me-2"></i>Album 2017
+          <button class="btn btn-lg glass px-4 py-2 fw-bold album-filter" data-album="2026A" style="border: 2px solid var(--glass-border); color: var(--text-primary);">
+            <i class="bi bi-calendar-event me-2"></i>Album 2026A
           </button>
         </div>
       </div>
@@ -96,7 +112,7 @@
   <section class="py-5">
     <div class="container">
       <div id="albumGrid" class="grid-container">
-        <!-- Auto populated cards by js/gallery.js -->
+        <!-- Auto populated by JS -->
       </div>
     </div>
   </section>
@@ -104,7 +120,7 @@
   <!-- Fullscreen Modal -->
   <div class="modal fade" id="fullscreenModal" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
-  <div class="modal-content border-0 p-0" style="background: var(--bg-primary);">
+      <div class="modal-content border-0 p-0" style="background: var(--bg-primary);">
         <div class="d-flex align-items-center justify-content-center h-100 position-relative p-4">
           <button class="position-absolute top-20px start-20px btn glass-text rounded-circle shadow-lg p-3" onclick="changeImage(-1)">
             <i class="bi bi-chevron-left fs-1"></i>
@@ -114,15 +130,16 @@
           <button class="position-absolute top-20px end-20px btn glass-text rounded-circle shadow-lg p-3" onclick="changeImage(1)">
             <i class="bi bi-chevron-right fs-1"></i>
           </button>
-          <button class="position-absolute top-20px end-120px btn btn-success rounded-circle shadow-lg p-3" onclick="downloadImage()">
+          <button class="position-absolute top-20px end-80px btn btn-success rounded-circle shadow-lg p-3" onclick="downloadImage()" title="Download">
             <i class="bi bi-download fs-4"></i>
           </button>
           <button class="btn btn-success position-absolute bottom-30px start-50 translate-middle-x rounded-pill px-4 py-2 shadow-lg z-3" onclick="downloadImage()" title="Download">
             <i class="bi bi-download me-2"></i>DOWNLOAD
           </button>
-          <button class="position-absolute top-20px end-60px btn glass rounded-circle shadow-lg p-3" data-bs-dismiss="modal" title="Close">
+          <button class="position-absolute top-20px end-20px btn glass rounded-circle shadow-lg p-3" data-bs-dismiss="modal" title="Close">
             <i class="bi bi-x-lg fs-4"></i>
           </button>
+
         </div>
       </div>
     </div>
